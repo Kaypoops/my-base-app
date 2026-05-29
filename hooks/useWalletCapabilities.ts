@@ -1,0 +1,14 @@
+import { useCapabilities } from 'wagmi'
+import { baseSepolia } from 'wagmi/chains'
+import { useMemo } from 'react'
+
+export function useWalletCapabilities() {
+  const { data: capabilities } = useCapabilities()
+
+  const supportsBatching = useMemo(() => {
+    const atomic = capabilities?.[baseSepolia.id]?.atomic
+    return atomic?.status === 'ready' || atomic?.status === 'supported'
+  }, [capabilities])
+
+  return { supportsBatching }
+}
